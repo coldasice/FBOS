@@ -22,10 +22,10 @@ public class FBOSServer {
         //Initialize all the names and such
         String serverName = "127.0.0.1";
         String dbms = "mysql";
-        String dbName = "fbdb";
-        String portNumber = "3306";
-        String userName = "root";
-        String password = "Capone7706";
+        String dbName = "";
+        String portNumber = "";
+        String userName = "";
+        String password = "";
         //Open up my connection
         String dbUrl = "jdbc:" + dbms + "://" + serverName + ":" + portNumber + "/" + dbName;
         String dbClass = "com.mysql.jdbc.Driver";
