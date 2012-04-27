@@ -35,6 +35,9 @@ public class uiLog extends javax.swing.JFrame {
         uiNewLab = new javax.swing.JLabel();
         uiLogButt = new javax.swing.JButton();
         uiRegButt = new javax.swing.JButton();
+        uiIPAddLab = new javax.swing.JLabel();
+        uiIPAddTF = new javax.swing.JTextField();
+        uiIPAddButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +73,24 @@ public class uiLog extends javax.swing.JFrame {
         uiRegButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         uiRegButt.setText("Registration");
 
+        uiIPAddLab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiIPAddLab.setText("IP Address");
+
+        uiIPAddTF.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiIPAddTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiIPAddTFActionPerformed(evt);
+            }
+        });
+
+        uiIPAddButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiIPAddButt.setText("Enter");
+        uiIPAddButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiIPAddButtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -81,7 +102,8 @@ public class uiLog extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(uiNewLab)
                             .addComponent(uiLogLab)
-                            .addComponent(uiRegButt)))
+                            .addComponent(uiRegButt)
+                            .addComponent(uiIPAddLab)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(81, 81, 81)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -89,31 +111,40 @@ public class uiLog extends javax.swing.JFrame {
                             .addComponent(uiNameLab))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uiNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(uiPassTF, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(uiLogButt))))
+                            .addComponent(uiIPAddButt)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(uiNameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                                .addComponent(uiPassTF, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                                .addComponent(uiLogButt)
+                                .addComponent(uiIPAddTF)))))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uiIPAddLab)
+                    .addComponent(uiIPAddTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uiIPAddButt)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(uiLogLab)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uiNameLab)
-                    .addComponent(uiNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(uiNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uiNameLab))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uiPassLab, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uiPassTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(uiPassTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uiPassLab, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uiLogButt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGap(23, 23, 23)
                 .addComponent(uiNewLab)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uiRegButt)
-                .addGap(63, 63, 63))
+                .addGap(28, 28, 28))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -140,6 +171,15 @@ public class uiLog extends javax.swing.JFrame {
         uiPass = uiPassTF.getText();
         
     }//GEN-LAST:event_uiLogButtActionPerformed
+
+    private void uiIPAddButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiIPAddButtActionPerformed
+        String uiIPAdd;
+        uiIPAdd = uiIPAddTF.getText();
+    }//GEN-LAST:event_uiIPAddButtActionPerformed
+
+    private void uiIPAddTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiIPAddTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uiIPAddTFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,6 +224,9 @@ public class uiLog extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton uiIPAddButt;
+    private javax.swing.JLabel uiIPAddLab;
+    private javax.swing.JTextField uiIPAddTF;
     private javax.swing.JButton uiLogButt;
     private javax.swing.JLabel uiLogLab;
     private javax.swing.JLabel uiNameLab;
