@@ -17,6 +17,8 @@ import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.*;
+import java.util.ArrayList;
+import java.util.Map;
 /**
  *
  * @author User
@@ -61,6 +63,7 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
                        String company, String college, int gradYear)  throws RemoteException
     {
         UserAcct newUser = new UserAcct(userName, password, profession, livingCity, company, college, gradYear);
+        UserAcct newUser2 = new UserAcct(userName, "NOPASS", profession, livingCity, company, college, gradYear);
         return newUser;        
     }
     
@@ -68,15 +71,8 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
     public synchronized UserAcctInterface loginAccount(String userName, String password) throws RemoteException
     {
         try {
-            UserAcctInterface myAcct = (UserAcctInterface)(registry.lookup(userName));
-            if(myAcct.getPassword().equals(password)){
-                System.out.println("Access Granted");
-                return myAcct;
-            }
-            else {
-                System.out.println("Access Denied");
-                return null;
-            }
+            UserAcctInterface myAcct = (UserAcctInterface)(registry.lookup(userName+"-"+password));
+            return myAcct;
         } catch (NotBoundException ex) {
             Logger.getLogger(FBOSServant.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {
@@ -86,9 +82,38 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
     }
     
     @Override
-    public synchronized int searchForFriends() throws RemoteException
+    public synchronized ArrayList<String> searchForFriends(String college, String company) throws RemoteException
     {
-        return -1;
+        String[] objList = registry.list();
+        ArrayList<String> userList = new ArrayList<String>();
+        for(int i = 0; i < objList.length; i++) {
+            if(objList[i].contains("-NOPASS")) {
+                userList.add(objList[i]);
+            }
+        }
+        ArrayList<UserAcctInterface> userObjList = new ArrayList<UserAcctInterface>();
+        for(int i = 0; i < userList.size(); i++) {
+            try {
+                UserAcctInterface currAcct = (UserAcctInterface)(registry.lookup(userList.get(i)));
+                Map currProfileInfo = currAcct.viewProfile();
+                String currCompany = (String) currProfileInfo.get("company");
+                String currCollege = (String) currProfileInfo.get("college");
+                if (company != null && currCompany.equals(company)) {
+                    userObjList.add(currAcct);
+                }
+                else if (college != null && currCollege.equals(college)) {
+                    userObjList.add(currAcct);
+                }
+                else if(college == null && company == null) {
+                    userObjList.add(currAcct);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(FBOSServant.class.getName()).log(Level.SEVERE, null, ex);
+                userList.remove(i);
+            }
+        }
+        
+        return userList;
     }
     
     @Override
@@ -97,13 +122,5 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
         return -1;
     }
     
-    public void closeCon() {
-        //close up the connection when we're done
-        try {
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FBOSServant.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
 }

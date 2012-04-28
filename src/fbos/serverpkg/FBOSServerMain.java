@@ -21,10 +21,6 @@ public class FBOSServerMain
             e.printStackTrace();
             System.exit(1);
         }
-        /*
-        FBOSServer myFB = new FBOSServer();
-        myFB.addUser("DUser", "DPass", "DProf", "DCity", "DComp", "DCol", 2012);
-        myFB.closeCon();
-        */
+        
     }
 }

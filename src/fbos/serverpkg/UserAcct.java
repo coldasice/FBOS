@@ -10,7 +10,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-
+import java.lang.Object;
+import java.util.HashMap;
+import java.util.Map;
 /**
  *
  * @author User
@@ -20,27 +22,22 @@ public class UserAcct extends java.rmi.server.UnicastRemoteObject implements Use
     int      thisRMIPort;
     String   thisRMIAddress;
     Registry registry;    // rmi registry for lookup the remote objects.
-    String userName = "";
-    String password = "";
-    String profession = "";
-    String livingCity = "";
-    String company = "";
-    String college = "";
     ArrayList<String> myUpdates = new ArrayList<String>();
     ArrayList<UserAcctInterface> myFriends = new ArrayList<UserAcctInterface>();
     ArrayList<UserAcctInterface> myRequests = new ArrayList<UserAcctInterface>();
-    int gradYear = -1;
+    Map<String, Object> profileInfo = new HashMap<String, Object>();
     
     public UserAcct(String userName, String password, String profession, String livingCity, 
                        String company, String college, int gradYear) throws RemoteException
     {
-        this.userName = userName;
-        this.password = password;
-        this.profession = profession;
-        this.livingCity = livingCity;
-        this.company = company;
-        this.college = college;
-        this.gradYear = gradYear;
+        
+        profileInfo.put("userName", userName);
+        profileInfo.put("password", password);
+        profileInfo.put("profession", profession);
+        profileInfo.put("livingCity", livingCity);
+        profileInfo.put("company", company);
+        profileInfo.put("college", college);
+        profileInfo.put("gradYear", gradYear);
         try{
             // get the address of this host.
             thisRMIAddress= (InetAddress.getLocalHost()).toString();
@@ -54,32 +51,48 @@ public class UserAcct extends java.rmi.server.UnicastRemoteObject implements Use
         try{
             // create the registry and bind the name and object.
             registry = LocateRegistry.getRegistry( thisRMIPort );
-            registry.rebind(userName, this);
+            registry.rebind(userName+"-"+password, this);
         }
         catch(RemoteException e){
             throw e;
         }
     }
-    
+        
     @Override
-    public synchronized int viewProfile() throws RemoteException
+    public synchronized Map viewProfile() throws RemoteException
     {
-        System.out.println("STUFFFF");
-        return -1;
+        return profileInfo;
     } 
     
     @Override
     public synchronized int updateProfile(String userName, String password, String profession, String livingCity, 
                        String company, String college, int gradYear) throws RemoteException
     {
-        this.userName = userName;
-        this.password = password;
-        this.profession = profession;
-        this.livingCity = livingCity;
-        this.company = company;
-        this.college = college;
-        this.gradYear = gradYear;
-        return 1;
+        if(!(password.equals("NOPASS") || profileInfo.get("password").equals("NOPASS")) ) {
+            try{
+            // create the registry and bind the name and object.
+                String oldUser = (String)profileInfo.get("userName");
+                String oldPass = (String)profileInfo.get("password");
+                registry.unbind(oldUser+"-"+oldPass);
+                profileInfo.put("userName", userName);
+                profileInfo.put("password", password);
+                profileInfo.put("profession", profession);
+                profileInfo.put("livingCity", livingCity);
+                profileInfo.put("company", company);
+                profileInfo.put("college", college);
+                profileInfo.put("gradYear", gradYear);
+                registry.rebind(userName+"-"+password, this);
+                registry.unbind(userName+"-NOPASS");
+                UserAcct newUser2 = new UserAcct(userName, "NOPASS", profession, livingCity, company, college, gradYear);
+                return 1;
+            }
+            catch(Exception e) {
+                System.err.println(e.getStackTrace());
+                return 0;
+            }
+            
+        }
+        return 0;
     }
     
     @Override
@@ -90,86 +103,9 @@ public class UserAcct extends java.rmi.server.UnicastRemoteObject implements Use
     }
     
     @Override
-    public synchronized int getUpdates() throws RemoteException
+    public synchronized ArrayList<String> getUpdates() throws RemoteException
     {
-        return -1;
-    }
-
-    @Override
-    public String getUserName() throws RemoteException {
-        return userName;
-    }
-
-    @Override
-    public String getPassword() throws RemoteException {
-        return password;
-    }
-
-    @Override
-    public String getProfession() throws RemoteException {
-        return profession;
-    }
-
-    @Override
-    public String getLivingCity() throws RemoteException {
-        return livingCity;
-    }
-
-    @Override
-    public String getCompany() throws RemoteException {
-        return company;
-    }
-
-    @Override
-    public String getCollege() throws RemoteException {
-        return college;
-    }
-
-    @Override
-    public int getGradYear() throws RemoteException {
-        return gradYear;
-    }
-
-    @Override
-    public String setUserName(String value) throws RemoteException {
-        userName = value;
-        return userName;
-    }
-
-    @Override
-    public String setPassword(String value) throws RemoteException {
-        password = value;
-        return password;
-    }
-
-    @Override
-    public String setProfession(String value) throws RemoteException {
-        profession = value;
-        return profession;
-    }
-
-    @Override
-    public String setLivingCity(String value) throws RemoteException {
-        livingCity = value;
-        return livingCity;
-    }
-
-    @Override
-    public String setCompany(String value) throws RemoteException {
-        company = value;
-        return company;
-    }
-
-    @Override
-    public String setCollege(String value) throws RemoteException {
-        college = value;
-        return college;
-    }
-
-    @Override
-    public int setGradYear(int value) throws RemoteException {
-        gradYear = value;
-        return gradYear;
+        return myUpdates;
     }
     
 }

@@ -24,7 +24,7 @@ public class FBOSClient
     {
        FBOSServantInterface FBOSServer;
        Registry registry;
-       String serverAddress="192.168.1.69";//args[0];
+       String serverAddress="172.24.8.22";//args[0];
        String serverPort="3232";//args[1];
        String text="useless";//args[2];
        System.out.println("sending "+text+" to "+serverAddress+":"+serverPort);
