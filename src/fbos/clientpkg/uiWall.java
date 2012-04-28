@@ -65,6 +65,7 @@ public class uiWall extends javax.swing.JFrame {
         uiWallLab = new javax.swing.JLabel();
         uiWallProfButt = new javax.swing.JButton();
         uiWallSearchButt = new javax.swing.JButton();
+        uiWallLogOutButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,14 +171,23 @@ public class uiWall extends javax.swing.JFrame {
         uiWallSearchButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         uiWallSearchButt.setText("SEARCH FOR A FRIEND");
 
+        uiWallLogOutButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiWallLogOutButt.setText("LOG OUT");
+        uiWallLogOutButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiWallLogOutButtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(uiWallProfButt, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uiWallSearchButt))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(uiWallProfButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(uiWallSearchButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(uiWallLogOutButt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(uiWallLab)
@@ -305,7 +315,9 @@ public class uiWall extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(uiWallProfButt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uiWallSearchButt))
+                        .addComponent(uiWallSearchButt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uiWallLogOutButt))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -333,6 +345,10 @@ public class uiWall extends javax.swing.JFrame {
     private void uiWallProfButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiWallProfButtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_uiWallProfButtActionPerformed
+
+    private void uiWallLogOutButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiWallLogOutButtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uiWallLogOutButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -413,6 +429,7 @@ public class uiWall extends javax.swing.JFrame {
     private javax.swing.JTextArea uiWall4TA;
     private javax.swing.JTextArea uiWall5TA;
     private javax.swing.JLabel uiWallLab;
+    private javax.swing.JButton uiWallLogOutButt;
     private javax.swing.JButton uiWallProfButt;
     private javax.swing.JButton uiWallSearchButt;
     // End of variables declaration//GEN-END:variables

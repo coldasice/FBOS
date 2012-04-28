@@ -5,6 +5,7 @@
 package fbos.clientpkg;
 import fbos.FBOSServantInterface;
 import fbos.UserAcctInterface;
+import java.awt.BorderLayout;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -14,6 +15,7 @@ import java.net.*;
 import java.rmi.server.RemoteRef;
 import java.rmi.server.RemoteStub;
 import java.rmi.server.RemoteObject;
+import javax.swing.JFrame;
 /**
  *
  * @author User
@@ -22,9 +24,12 @@ public class FBOSClient
 {
     public static void main(String args[]) 
     {
-       FBOSServantInterface FBOSServer;
+        uiLog frame = new uiLog ();
+                frame.setVisible(true);
+        // frame.getContentPane().add(emptyLabel,BorderLayout.Center);
+/*       FBOSServantInterface FBOSServer;
        Registry registry;
-       String serverAddress="192.168.1.69";//args[0];
+       String serverAddress="172.24.8.22";//args[0];
        String serverPort="3232";//args[1];
        String text="useless";//args[2];
        System.out.println("sending "+text+" to "+serverAddress+":"+serverPort);
@@ -50,6 +55,7 @@ public class FBOSClient
        catch(Exception e){
            e.printStackTrace();
        }
-       
+    */   
     }
+    
 }

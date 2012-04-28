@@ -131,7 +131,7 @@ public class uiUserEdit extends javax.swing.JFrame {
                     .addGroup(uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(uiExitButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(uiProfButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addContainerGap(425, Short.MAX_VALUE))
         );
         uiProPanLayout.setVerticalGroup(
             uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,7 +168,7 @@ public class uiUserEdit extends javax.swing.JFrame {
                 .addComponent(uiProfButt)
                 .addGap(18, 18, 18)
                 .addComponent(uiExitButt)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
