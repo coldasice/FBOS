@@ -15,7 +15,7 @@ public class FBOSServerMain
     public static void main(String args[])
     {
         try{
-            FBOSServer myFB = new FBOSServer();
+            FBOSServant myFB = new FBOSServant();
         }
         catch (Exception e) {
             e.printStackTrace();
