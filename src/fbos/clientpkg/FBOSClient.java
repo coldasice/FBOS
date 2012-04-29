@@ -5,17 +5,9 @@
 package fbos.clientpkg;
 import fbos.FBOSServantInterface;
 import fbos.UserAcctInterface;
-import java.awt.BorderLayout;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.rmi.*;
-import java.rmi.registry.*;
-import java.net.*;
-import java.rmi.server.RemoteRef;
-import java.rmi.server.RemoteStub;
-import java.rmi.server.RemoteObject;
-import javax.swing.JFrame;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
 /**
  *
  * @author User
@@ -24,10 +16,7 @@ public class FBOSClient
 {
     public static void main(String args[]) 
     {
-        uiLog frame = new uiLog ();
-                frame.setVisible(true);
-        // frame.getContentPane().add(emptyLabel,BorderLayout.Center);
-/*       FBOSServantInterface FBOSServer;
+       FBOSServantInterface FBOSServer;
        Registry registry;
        String serverAddress="172.24.8.22";//args[0];
        String serverPort="3232";//args[1];
@@ -41,6 +30,9 @@ public class FBOSClient
                       
            // create new account
            UserAcctInterface proxy = FBOSServer.createAccount("DUser", "DPass", "DProf", "DCity", "DComp", "DCol", 2012);
+           UserAcctInterface proxy1 = FBOSServer.createAccount("DUser1", "DPass", "DProf", "DCity", "DComp1", "DCol", 2012);
+           UserAcctInterface proxy2 = FBOSServer.createAccount("DUser2", "DPass", "DProf", "DCity", "DComp1", "DCol", 2012);
+           UserAcctInterface proxy3 = FBOSServer.createAccount("DUser3", "DPass", "DProf", "DCity", "DComp", "DCol", 2012);
            UserAcctInterface loggedIn = FBOSServer.loginAccount("DUser", "DPass");
            
            if(loggedIn == null) {
@@ -49,13 +41,22 @@ public class FBOSClient
            else {
                System.out.println("Logged in");
                System.out.println(loggedIn.viewProfile());
+               int updateSuccess = loggedIn.updateProfile("NewUN", "NewPass", "DProf", "DCity", "DComp", "DCol", 2012);
+               if(updateSuccess == 0) {
+                   System.out.println("updated");
+               }
            }
            
+           ArrayList userObjList = FBOSServer.searchForFriends(null, null);
+           for(int i = 0; i < userObjList.size(); i++) {
+               UserAcctInterface currUser = (UserAcctInterface) userObjList.get(i);
+               System.out.println(currUser.viewProfile());
+           }
        }
        catch(Exception e){
            e.printStackTrace();
        }
-    */   
+       
     }
     
 }

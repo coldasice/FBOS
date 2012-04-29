@@ -62,9 +62,18 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
     public synchronized UserAcctInterface createAccount(String userName, String password, String profession, String livingCity, 
                        String company, String college, int gradYear)  throws RemoteException
     {
-        UserAcct newUser = new UserAcct(userName, password, profession, livingCity, company, college, gradYear);
-        UserAcct newUser2 = new UserAcct(userName, "NOPASS", profession, livingCity, company, college, gradYear);
-        return newUser;        
+        try {
+            UserAcctInterface myAcct = (UserAcctInterface)(registry.lookup(userName+"-NOPASS"));
+            System.out.println("Name exists");
+            return null;
+        } catch (NotBoundException ex) {
+            UserAcct newUser = new UserAcct(userName, password, profession, livingCity, company, college, gradYear);
+            UserAcct newUser2 = new UserAcct(userName, "NOPASS", profession, livingCity, company, college, gradYear);
+            return newUser;
+        } catch (AccessException ex) {
+            Logger.getLogger(FBOSServant.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     @Override
@@ -74,7 +83,7 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
             UserAcctInterface myAcct = (UserAcctInterface)(registry.lookup(userName+"-"+password));
             return myAcct;
         } catch (NotBoundException ex) {
-            Logger.getLogger(FBOSServant.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Unable to access account: " + userName);
         } catch (AccessException ex) {
             Logger.getLogger(FBOSServant.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,7 +91,7 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
     }
     
     @Override
-    public synchronized ArrayList<String> searchForFriends(String college, String company) throws RemoteException
+    public synchronized ArrayList<UserAcctInterface> searchForFriends(String college, String company) throws RemoteException
     {
         String[] objList = registry.list();
         ArrayList<String> userList = new ArrayList<String>();
@@ -113,7 +122,7 @@ public class FBOSServant extends java.rmi.server.UnicastRemoteObject implements 
             }
         }
         
-        return userList;
+        return userObjList;
     }
     
     @Override

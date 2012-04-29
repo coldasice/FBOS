@@ -11,8 +11,12 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.lang.Object;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author User
@@ -69,34 +73,35 @@ public class UserAcct extends java.rmi.server.UnicastRemoteObject implements Use
                        String company, String college, int gradYear) throws RemoteException
     {
         if(!(password.equals("NOPASS") || profileInfo.get("password").equals("NOPASS")) ) {
-            try{
-            // create the registry and bind the name and object.
-                String oldUser = (String)profileInfo.get("userName");
-                String oldPass = (String)profileInfo.get("password");
-                registry.unbind(oldUser+"-"+oldPass);
-                profileInfo.put("userName", userName);
-                profileInfo.put("password", password);
-                profileInfo.put("profession", profession);
-                profileInfo.put("livingCity", livingCity);
-                profileInfo.put("company", company);
-                profileInfo.put("college", college);
-                profileInfo.put("gradYear", gradYear);
-                registry.rebind(userName+"-"+password, this);
-                registry.unbind(userName+"-NOPASS");
-                UserAcct newUser2 = new UserAcct(userName, "NOPASS", profession, livingCity, company, college, gradYear);
-                return 1;
+            try {
+                // create the registry and bind the name and object.
+                    String oldUser = (String)profileInfo.get("userName");
+                    String oldPass = (String)profileInfo.get("password");
+                    registry.unbind(oldUser+"-"+oldPass);
+                    profileInfo.put("userName", userName);
+                    profileInfo.put("password", password);
+                    profileInfo.put("profession", profession);
+                    profileInfo.put("livingCity", livingCity);
+                    profileInfo.put("company", company);
+                    profileInfo.put("college", college);
+                    profileInfo.put("gradYear", gradYear);
+                    registry.rebind(userName+"-"+password, this);
+                    registry.unbind(oldUser+"-NOPASS");
+                    UserAcct newUser2 = new UserAcct(userName, "NOPASS", profession, livingCity, company, college, gradYear);
+                    return 1;
+            } catch (NotBoundException ex) {
+                Logger.getLogger(UserAcct.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AccessException ex) {
+                Logger.getLogger(UserAcct.class.getName()).log(Level.SEVERE, null, ex);
             }
-            catch(Exception e) {
-                System.err.println(e.getStackTrace());
-                return 0;
-            }
+            
             
         }
         return 0;
     }
     
     @Override
-    public synchronized int postUpdate(String content) throws RemoteException
+    public synchronized int postUpdate(String userName, String content) throws RemoteException
     {
         myUpdates.add(content);
         return 1;
