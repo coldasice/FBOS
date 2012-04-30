@@ -19,5 +19,6 @@ public interface FBOSServantInterface extends Remote
                        String company, String college, int gradYear) throws RemoteException;
         public abstract UserAcctInterface loginAccount(String userName, String password) throws RemoteException;
         public abstract ArrayList<UserAcctInterface> searchForFriends(String college, String company) throws RemoteException;
-        public abstract int inviteFriend(String userName) throws RemoteException;
+        public abstract int inviteFriend(UserAcctInterface myAcct, UserAcctInterface friendAcct) throws RemoteException;
+        public abstract int verifyName(String userName) throws RemoteException;
 }

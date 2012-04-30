@@ -4,12 +4,17 @@
  */
 package fbos.clientpkg;
 
+import fbos.UserAcctInterface;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Robin
  */
 public class uiUserEdit extends javax.swing.JFrame {
-
+    String UserName;
+    ArrayList proFileInfo;
     /**
      * Creates new form uiUserEdit
      */
@@ -43,6 +48,8 @@ public class uiUserEdit extends javax.swing.JFrame {
         uiYearLab = new javax.swing.JLabel();
         uiProfButt = new javax.swing.JButton();
         uiExitButt = new javax.swing.JButton();
+        yearLab = new javax.swing.JLabel();
+        uiFailLab = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,6 +111,15 @@ public class uiUserEdit extends javax.swing.JFrame {
 
         uiExitButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         uiExitButt.setText("Exit Profile Page");
+        uiExitButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiExitButtActionPerformed(evt);
+            }
+        });
+
+        yearLab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        uiFailLab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout uiProPanLayout = new javax.swing.GroupLayout(uiProPan);
         uiProPan.setLayout(uiProPanLayout);
@@ -127,11 +143,17 @@ public class uiUserEdit extends javax.swing.JFrame {
                     .addComponent(uiCityTF, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(uiCompTF, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(uiCollTF, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uiYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(uiExitButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(uiProfButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(425, Short.MAX_VALUE))
+                    .addGroup(uiProPanLayout.createSequentialGroup()
+                        .addComponent(uiYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(yearLab, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(uiProPanLayout.createSequentialGroup()
+                        .addGroup(uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(uiExitButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(uiProfButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(53, 53, 53)
+                        .addComponent(uiFailLab, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(246, Short.MAX_VALUE))
         );
         uiProPanLayout.setVerticalGroup(
             uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,9 +185,12 @@ public class uiUserEdit extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uiYearTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uiYearLab))
+                    .addComponent(uiYearLab)
+                    .addComponent(yearLab))
                 .addGap(18, 18, 18)
-                .addComponent(uiProfButt)
+                .addGroup(uiProPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uiProfButt)
+                    .addComponent(uiFailLab, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(uiExitButt)
                 .addContainerGap(115, Short.MAX_VALUE))
@@ -208,11 +233,34 @@ public class uiUserEdit extends javax.swing.JFrame {
             uiComp=uiCompTF.getText();
             uiColl=uiCollTF.getText();
             uiYear=uiYearTF.getText();
-                   }else{
+            int numYear = 0;
+            try{
+                numYear = Integer.parseInt(uiYear);
+                UserAcctInterface newAcct = FBOSClient.FBOSServer.createAccount(UserName, uiPass1, uiProf, uiCity, uiComp, uiColl, numYear);
+                if(newAcct == null) {
+                    uiFailLab.setText("Failed to create account");
+                }
+                else {
+                    uiWall newUserFrame = new uiWall(newAcct);
+                    newUserFrame.setVisible(true);
+                    this.dispose();
+                }
+            } catch (Exception e){
+                yearLab.setText("Needs to be a Valid Number");
+            }
+       }else{
             uiPassTF1.setText("Passwords do not match.");
             uiPassTF2.setText("");
         }
+        
+        
     }//GEN-LAST:event_uiProfButtActionPerformed
+
+    private void uiExitButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiExitButtActionPerformed
+        JFrame newUserFrame = new uiLog();
+        this.setVisible(false);
+        newUserFrame.setVisible(true);
+    }//GEN-LAST:event_uiExitButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,6 +311,7 @@ public class uiUserEdit extends javax.swing.JFrame {
     private javax.swing.JLabel uiCompLab;
     private javax.swing.JTextField uiCompTF;
     private javax.swing.JButton uiExitButt;
+    private javax.swing.JLabel uiFailLab;
     private javax.swing.JLabel uiPassLab1;
     private javax.swing.JLabel uiPassLab2;
     private javax.swing.JTextField uiPassTF1;
@@ -273,5 +322,6 @@ public class uiUserEdit extends javax.swing.JFrame {
     private javax.swing.JTextField uiProfTF;
     private javax.swing.JLabel uiYearLab;
     private javax.swing.JTextField uiYearTF;
+    private javax.swing.JLabel yearLab;
     // End of variables declaration//GEN-END:variables
 }

@@ -293,6 +293,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Previous"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
@@ -389,6 +392,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="1"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uiFri1ButtActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="uiFri2Butt">
       <Properties>
@@ -471,11 +477,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Previous"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uiPrevWallButtActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="uiNextWallButt">
       <Properties>
         <Property name="text" type="java.lang.String" value="Next"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uiNextWallButtActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="uiWallLab">
       <Properties>

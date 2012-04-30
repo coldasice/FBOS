@@ -4,6 +4,11 @@
  */
 package fbos.clientpkg;
 
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Robin
@@ -30,6 +35,8 @@ public class uiNewAccount extends javax.swing.JFrame {
         uiNameLab = new javax.swing.JLabel();
         uiUserTF = new javax.swing.JTextField();
         uiNameButt = new javax.swing.JButton();
+        uiLogButt = new javax.swing.JButton();
+        invalidLab = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,6 +46,11 @@ public class uiNewAccount extends javax.swing.JFrame {
         uiNameLab.setText("Enter a unique user name");
 
         uiUserTF.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiUserTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiUserTFActionPerformed(evt);
+            }
+        });
 
         uiNameButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         uiNameButt.setText("Enter user name if available");
@@ -48,6 +60,16 @@ public class uiNewAccount extends javax.swing.JFrame {
             }
         });
 
+        uiLogButt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiLogButt.setText("Exit Back To Login Page");
+        uiLogButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiLogButtActionPerformed(evt);
+            }
+        });
+
+        invalidLab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout UINewPanLayout = new javax.swing.GroupLayout(UINewPan);
         UINewPan.setLayout(UINewPanLayout);
         UINewPanLayout.setHorizontalGroup(
@@ -55,10 +77,15 @@ public class uiNewAccount extends javax.swing.JFrame {
             .addGroup(UINewPanLayout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(UINewPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(uiNameButt)
-                    .addComponent(uiUserTF, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uiNameLab))
-                .addContainerGap(616, Short.MAX_VALUE))
+                    .addGroup(UINewPanLayout.createSequentialGroup()
+                        .addComponent(uiUserTF, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(invalidLab, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(uiNameLab)
+                    .addGroup(UINewPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(uiLogButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(uiNameButt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(440, Short.MAX_VALUE))
         );
         UINewPanLayout.setVerticalGroup(
             UINewPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -66,10 +93,14 @@ public class uiNewAccount extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(uiNameLab)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(uiUserTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(UINewPanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uiUserTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(invalidLab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(uiNameButt)
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addComponent(uiLogButt)
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -93,7 +124,34 @@ public class uiNewAccount extends javax.swing.JFrame {
     private void uiNameButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiNameButtActionPerformed
         String uiName;
         uiName = uiUserTF.getText();
+        try {
+            int nameIsValid = FBOSClient.FBOSServer.verifyName(uiName);
+            if (nameIsValid !=1) {
+                invalidLab.setText("Name allready in use.");
+            }else{
+                uiUserEdit newUserFrame = new uiUserEdit();
+                newUserFrame.UserName=uiName;
+                newUserFrame.setVisible(true);
+                this.dispose();
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(uiNewAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_uiNameButtActionPerformed
+
+    private void uiLogButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiLogButtActionPerformed
+        JFrame newUserFrame = new uiLog();
+   //     this.setVisible(false);
+        newUserFrame.setVisible(true);
+        this.dispose();
+   //     uiLog.setVisible(true);
+        
+   //     toFront();
+    }//GEN-LAST:event_uiLogButtActionPerformed
+
+    private void uiUserTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiUserTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uiUserTFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,6 +196,8 @@ public class uiNewAccount extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel UINewPan;
+    private javax.swing.JLabel invalidLab;
+    private javax.swing.JButton uiLogButt;
     private javax.swing.JButton uiNameButt;
     private javax.swing.JLabel uiNameLab;
     private javax.swing.JTextField uiUserTF;

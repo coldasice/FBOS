@@ -15,7 +15,7 @@ import javax.swing.JFrame;
  * @author Robin
  */
 public class uiLog extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form uiLog
      */
@@ -46,8 +46,7 @@ public class uiLog extends javax.swing.JFrame {
         uiExitButt = new javax.swing.JButton();
         uiExitLab = new javax.swing.JLabel();
         uiPWField = new javax.swing.JPasswordField();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        uiConnStatLab = new javax.swing.JLabel();
 
         uiLogLab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         uiLogLab.setText("User Login");
@@ -119,6 +118,9 @@ public class uiLog extends javax.swing.JFrame {
             }
         });
 
+        uiConnStatLab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        uiConnStatLab.setText("Not Connected");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,7 +135,6 @@ public class uiLog extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uiLogLab)
                             .addComponent(uiExitLab)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,15 +142,18 @@ public class uiLog extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(uiNewLab)
                                         .addComponent(uiRegButt)
-                                        .addComponent(uiExitButt, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(uiExitButt, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(uiLogLab))
                                 .addGap(23, 23, 23)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(uiIPAddButt)
                                     .addComponent(uiIPAddTF, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                                     .addComponent(uiNameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                                     .addComponent(uiLogButt)
-                                    .addComponent(uiPWField))))))
-                .addContainerGap(568, Short.MAX_VALUE))
+                                    .addComponent(uiPWField))
+                                .addGap(18, 18, 18)
+                                .addComponent(uiConnStatLab, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,7 +161,8 @@ public class uiLog extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uiIPAddLab)
-                    .addComponent(uiIPAddTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(uiIPAddTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uiConnStatLab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uiIPAddButt)
                 .addGap(34, 34, 34)
@@ -216,34 +221,23 @@ public class uiLog extends javax.swing.JFrame {
     private void uiIPAddButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiIPAddButtActionPerformed
             
        String serverAddress = uiIPAddTF.getText();
-       FBOSServantInterface FBOSServer;
+
        Registry registry;
-//       String serverAddress="172.24.8.22";//args[0];
        String serverPort="3232";//args[1];
-       String text="useless";//args[2];
-       System.out.println("sending "+text+" to "+serverAddress+":"+serverPort);
+       System.out.println("sending to "+serverAddress+":"+serverPort);
        try{
            // get the �gregistry�h
            registry=LocateRegistry.getRegistry(serverAddress,(new Integer(serverPort)).intValue());
            // look up the remote object
-           FBOSServer=(FBOSServantInterface)(registry.lookup("FBOSServer"));
-                      
-           // create new account
-           UserAcctInterface proxy = FBOSServer.createAccount("DUser", "DPass", "DProf", "DCity", "DComp", "DCol", 2012);
-           UserAcctInterface loggedIn = FBOSServer.loginAccount("DUser", "DPass");
-           
-           if(loggedIn == null) {
-               System.out.println("Could not log in");
-           }
-           else {
-               System.out.println("Logged in");
-               System.out.println(loggedIn.viewProfile());
-           }
-           
+           FBOSClient.FBOSServer=(FBOSServantInterface)(registry.lookup("FBOSServer"));
+           if (FBOSClient.FBOSServer != null)
+                uiConnStatLab.setText("Connected to Server");          
+     
        }
        catch(Exception e){
            e.printStackTrace();
        }
+
     }//GEN-LAST:event_uiIPAddButtActionPerformed
 
     private void uiIPAddTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiIPAddTFActionPerformed
@@ -257,8 +251,10 @@ public class uiLog extends javax.swing.JFrame {
     private void uiRegButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiRegButtActionPerformed
         // TODO add your handling code here:
         JFrame newUserFrame = new uiNewAccount();
-        this.setVisible(false);
         newUserFrame.setVisible(true);
+        
+        this.dispose();
+ //       uiNewAccount.setVisible(true);
     }//GEN-LAST:event_uiRegButtActionPerformed
 
     private void uiPWFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiPWFieldActionPerformed
@@ -308,6 +304,7 @@ public class uiLog extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel uiConnStatLab;
     private javax.swing.JButton uiExitButt;
     private javax.swing.JLabel uiExitLab;
     private javax.swing.JButton uiIPAddButt;

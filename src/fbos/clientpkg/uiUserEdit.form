@@ -66,13 +66,21 @@
                       <Component id="uiCityTF" alignment="0" min="-2" pref="304" max="-2" attributes="0"/>
                       <Component id="uiCompTF" alignment="0" min="-2" pref="304" max="-2" attributes="0"/>
                       <Component id="uiCollTF" alignment="0" min="-2" pref="304" max="-2" attributes="0"/>
-                      <Component id="uiYearTF" min="-2" pref="304" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="uiExitButt" alignment="0" max="32767" attributes="0"/>
-                          <Component id="uiProfButt" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="uiYearTF" min="-2" pref="304" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="yearLab" min="-2" pref="149" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="uiExitButt" alignment="0" max="32767" attributes="0"/>
+                              <Component id="uiProfButt" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                          <Component id="uiFailLab" min="-2" pref="153" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="425" max="32767" attributes="0"/>
+                  <EmptySpace pref="246" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -113,9 +121,13 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="uiYearTF" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="uiYearLab" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="yearLab" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="uiProfButt" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="uiProfButt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="uiFailLab" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="uiExitButt" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="115" max="32767" attributes="0"/>
@@ -252,6 +264,23 @@
               <Font name="Tahoma" size="14" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Exit Profile Page"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uiExitButtActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="yearLab">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="14" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="uiFailLab">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="14" style="0"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>

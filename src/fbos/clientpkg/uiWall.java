@@ -4,17 +4,74 @@
  */
 package fbos.clientpkg;
 
+import fbos.UserAcctInterface;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 /**
  *
  * @author Robin
  */
 public class uiWall extends javax.swing.JFrame {
-
+    static UserAcctInterface myAccount;
+    int numUpdate, numFriends;
     /**
      * Creates new form uiWall
      */
-    public uiWall() {
+    public uiWall(UserAcctInterface thisAccount) {
         initComponents();
+        myAccount = thisAccount;
+        try {
+            numUpdate = 0;
+            ArrayList myUpdates = myAccount.getUpdates();
+            
+            JTextArea[] uiWallTAs = {uiWall1TA, uiWall2TA, uiWall3TA, uiWall4TA, uiWall5TA};
+            int updateSize = myUpdates.size();
+            int loopMaxUpdates = 5;
+            
+            
+            if(updateSize < loopMaxUpdates)
+                loopMaxUpdates = updateSize;
+            for(int i = 0; i < loopMaxUpdates; i++) {
+                uiWallTAs[i].setText((String)myUpdates.get(numUpdate+i));
+            }
+            for(int i = loopMaxUpdates; i < 5; i++) {
+                uiWallTAs[i].setText("");
+            }
+            
+            JTextField[] uiFriendTFs = {uiFri1TF, uiFri2TF, uiFri3TF, uiFri4TF, uiFri5TF, uiFri6TF, uiFri7TF, uiFri8TF, uiFri9TF, uiFri10TF};
+            ArrayList myFriends = myAccount.getFriends();
+            String[] friendNames = new String[10];
+            numFriends = 0;
+            int loopMaxFriends = 10;
+            int friendSize = myFriends.size();
+            if(friendSize < loopMaxFriends)
+                loopMaxFriends = friendSize;
+            
+            
+            for (int i = 0; i<loopMaxFriends; i++){
+                UserAcctInterface friendAcct = (UserAcctInterface) myFriends.get(numFriends+i);
+                Map friendInfo = friendAcct.viewProfile();
+                String friendName = (String) friendInfo.get("userName");
+                friendNames[i] = friendName;
+            }
+            for(int i = loopMaxFriends; i < 10; i++) {
+                friendNames[i] = "";
+            }
+            
+            for(int i = 0; i < 10; i++) {
+                uiFriendTFs[i].setText(friendNames[i]);
+            }
+            
+        } catch (RemoteException ex) {
+            Logger.getLogger(uiWall.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -95,6 +152,11 @@ public class uiWall extends javax.swing.JFrame {
         uiFri10TF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jButton1.setText("Previous");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Next");
 
@@ -123,6 +185,11 @@ public class uiWall extends javax.swing.JFrame {
 
         uiFri1Butt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         uiFri1Butt.setText("1");
+        uiFri1Butt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiFri1ButtActionPerformed(evt);
+            }
+        });
 
         uiFri2Butt.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         uiFri2Butt.setText("2");
@@ -154,8 +221,18 @@ public class uiWall extends javax.swing.JFrame {
         jLabel1.setText("Post on Friends Wall");
 
         uiPrevWallButt.setText("Previous");
+        uiPrevWallButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiPrevWallButtActionPerformed(evt);
+            }
+        });
 
         uiNextWallButt.setText("Next");
+        uiNextWallButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uiNextWallButtActionPerformed(evt);
+            }
+        });
 
         uiWallLab.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         uiWallLab.setText("WALL");
@@ -343,12 +420,90 @@ public class uiWall extends javax.swing.JFrame {
     }//GEN-LAST:event_uiFri1TFActionPerformed
 
     private void uiWallProfButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiWallProfButtActionPerformed
-        // TODO add your handling code here:
+        JFrame newUserFrame = new uiUserEdit();
+        this.setVisible(false);
+        newUserFrame.setVisible(true);
     }//GEN-LAST:event_uiWallProfButtActionPerformed
 
     private void uiWallLogOutButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiWallLogOutButtActionPerformed
-        // TODO add your handling code here:
+        JFrame newUserFrame = new uiLog();
+        this.setVisible(false);
+        newUserFrame.setVisible(true);
     }//GEN-LAST:event_uiWallLogOutButtActionPerformed
+
+    private void uiFri1ButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiFri1ButtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uiFri1ButtActionPerformed
+
+    private void uiPrevWallButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiPrevWallButtActionPerformed
+        if (numUpdate>=5){
+            try {
+                numUpdate -=5;
+                ArrayList myUpdates = myAccount.getUpdates();
+                uiWall1TA = (JTextArea) myUpdates.get(numUpdate+0);
+                uiWall2TA = (JTextArea) myUpdates.get(numUpdate+1);
+                uiWall3TA = (JTextArea) myUpdates.get(numUpdate+2);
+                uiWall4TA = (JTextArea) myUpdates.get(numUpdate+3);
+                uiWall5TA = (JTextArea) myUpdates.get(numUpdate+4);
+            } catch (RemoteException ex) {
+                Logger.getLogger(uiWall.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+            
+    }//GEN-LAST:event_uiPrevWallButtActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            ArrayList myUpdates = myAccount.getUpdates();
+            uiWall1TA = (JTextArea) myUpdates.get(0);
+            uiWall2TA = (JTextArea) myUpdates.get(1);
+            uiWall3TA = (JTextArea) myUpdates.get(2);
+            uiWall4TA = (JTextArea) myUpdates.get(3);
+            uiWall5TA = (JTextArea) myUpdates.get(4);
+            numUpdate = 0;
+            ArrayList myFriends = myAccount.getFriends();
+            String[] friendNames = new String[10];
+            
+            for (int i =0; i<10; i++){
+                UserAcctInterface friendAcct = (UserAcctInterface) myFriends.get(i);
+                Map friendInfo = friendAcct.viewProfile();
+                String friendName = (String) friendInfo.get("userName");
+                friendNames[i] = friendName;
+            }
+            uiFri1TF.setText(friendNames[0]);
+            uiFri2TF.setText(friendNames[1]);
+            uiFri3TF.setText(friendNames[2]);
+            uiFri4TF.setText(friendNames[3]);
+            uiFri5TF.setText(friendNames[4]);
+            uiFri6TF.setText(friendNames[5]);
+            uiFri7TF.setText(friendNames[6]);
+            uiFri8TF.setText(friendNames[7]);
+            uiFri9TF.setText(friendNames[8]);
+            uiFri10TF.setText(friendNames[9]);
+            numFriends = 0;
+        } catch (RemoteException ex) {
+            Logger.getLogger(uiWall.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void uiNextWallButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uiNextWallButtActionPerformed
+        
+            try {
+                
+                ArrayList myUpdates = myAccount.getUpdates();
+                if (numUpdate<=myUpdates.size()-5){
+                    numUpdate +=5;
+                    uiWall1TA = (JTextArea) myUpdates.get(numUpdate+0);
+                    uiWall2TA = (JTextArea) myUpdates.get(numUpdate+1);
+                    uiWall3TA = (JTextArea) myUpdates.get(numUpdate+2);
+                    uiWall4TA = (JTextArea) myUpdates.get(numUpdate+3);
+                    uiWall5TA = (JTextArea) myUpdates.get(numUpdate+4);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(uiWall.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_uiNextWallButtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -387,7 +542,7 @@ public class uiWall extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new uiWall().setVisible(true);
+                new uiWall(null).setVisible(true);
             }
         });
     }
